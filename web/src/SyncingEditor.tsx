@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Editor } from "slate-react";
 import { initialValue } from "./slateInitialValue";
 import Mitt from "mitt";
+import { Operation } from "slate";
 
 interface Props {
 
@@ -14,11 +15,14 @@ export const SyncingEditor: React.FC<Props> = () => {
     const [value, setValue] = useState(initialValue);
     const editor = useRef<Editor | null>(null);
     const id = useRef(`${Date.now()}`);
-    //const remote = useRef(null);
+    const remote = useRef(false);
 
     useEffect(() => {
-        emitter.on("*", (type) => {
-            if(id.current !== type) {
+        (emitter as any).on("*", (type: string, ops: Operation[]) => {
+            if (id.current !== type) {
+                // remote.current = true;
+                // ops.forEach(op => editor.current!.applyOperation(op));
+                // remote.current = false;
                 console.log("Change has happened in other editor")
             }
         })
@@ -26,14 +30,19 @@ export const SyncingEditor: React.FC<Props> = () => {
 
     return (
         <Editor
-            ref={editor} 
-            value={value}  
+            ref={editor}
+            style={{
+                backgroundColor: "#fafafa",
+                maxWidth: 800,
+                minHeight: 150
+            }}
+            value={value}
             onChange={(opts) => {
                 setValue(opts.value)
 
                 const ops = opts.operations
                     .filter(o => {
-                        if(o) {
+                        if (o) {
                             return (
                                 o.type !== "set_selection" &&
                                 o.type !== "set_value" &&
@@ -44,12 +53,12 @@ export const SyncingEditor: React.FC<Props> = () => {
                         return false;
                     })
                     .toJS()
-                    .map((o: any) => ({...o, data: { source: "one" }}));
+                    .map((o: any) => ({ ...o, data: { source: "one" } }));
 
-                if(ops.length) {
+                if (ops.length ) {
                     emitter.emit(id.current, ops);
                 }
-            }} 
+            }}
         />
     )
 }
