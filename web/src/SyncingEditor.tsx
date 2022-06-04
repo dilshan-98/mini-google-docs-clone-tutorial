@@ -20,9 +20,9 @@ export const SyncingEditor: React.FC<Props> = () => {
     useEffect(() => {
         (emitter as any).on("*", (type: string, ops: Operation[]) => {
             if (id.current !== type) {
-                // remote.current = true;
-                // ops.forEach(op => editor.current!.applyOperation(op));
-                // remote.current = false;
+                remote.current = true;
+                ops.forEach(op => editor.current!.applyOperation(op));
+                remote.current = false;
                 console.log("Change has happened in other editor")
             }
         })
@@ -55,7 +55,7 @@ export const SyncingEditor: React.FC<Props> = () => {
                     .toJS()
                     .map((o: any) => ({ ...o, data: { source: "one" } }));
 
-                if (ops.length ) {
+                if (ops.length && !remote.current) {
                     emitter.emit(id.current, ops);
                 }
             }}
