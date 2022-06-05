@@ -1,5 +1,6 @@
 import React from "react";
 import { SyncingEditor } from "./SyncingEditor";
+import { EditorSync } from "./ed";
 
 const App = () => {
   return (
@@ -7,6 +8,7 @@ const App = () => {
       <SyncingEditor />
       <br />
       <SyncingEditor />
+      
     </div>
   );
 }
