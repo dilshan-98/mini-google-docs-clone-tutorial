@@ -7,8 +7,6 @@ const App = () => {
       <SyncingEditor />
       <br />
       <SyncingEditor />
-      <br />
-      <SyncingEditor />
     </div>
   );
 }
