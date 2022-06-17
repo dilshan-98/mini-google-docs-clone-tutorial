@@ -6,9 +6,6 @@ const App = () => {
   return (
     <div>
       <SyncingEditor />
-      <br />
-      <SyncingEditor />
-      
     </div>
   );
 }
