@@ -21,14 +21,14 @@ export const SyncingEditor: React.FC<Props> = () => {
     const remote = useRef(false);
 
     useEffect(() => {
-        (emitter as any).on("*", (type: string, ops: Operation[]) => {
-            if (id.current !== type) {
+        socket.on("new-remote-operations", (editorId: string, ops: string) => {
+            if (id.current !== editorId) {
                 remote.current = true;
-                ops.forEach(op => editor.current!.applyOperation(op));
+                JSON.parse(ops).forEach((op:any) => editor.current!.applyOperation(op));
                 remote.current = false;
             }
-        })
-    }, []);
+        }
+    )}, []);
 
     return (
         <Editor
@@ -58,7 +58,7 @@ export const SyncingEditor: React.FC<Props> = () => {
                     .map((o: any) => ({ ...o, data: { source: "one" } }));
 
                 if (ops.length && !(remote.current)) {
-                    emitter.emit(id.current, ops);
+                    socket.emit(id.current, ops);
                 }
             }}
         />
