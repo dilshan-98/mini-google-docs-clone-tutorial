@@ -2,17 +2,11 @@ import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { Editor } from "slate-react";
 import { initialValue } from "./slateInitialValue";
-import Mitt from "mitt";
-import { Operation } from "slate";
 import io from 'socket.io-client';
 
 const socket = io('http://localhost:4000');
 
-interface Props {
-
-}
-
-const emitter = Mitt();
+interface Props {}
 
 export const SyncingEditor: React.FC<Props> = () => {
     const [value, setValue] = useState(initialValue);
