@@ -8,12 +8,8 @@ export const initialValue = Value.fromJSON({
           type: "paragraph",
           nodes: [
             {
-              object: "text",
-              leaves: [
-                {
-                  text: "A line of text in a paragraph."
-                }
-              ]
+              object: "text", 
+              text: "A line of text in a paragraph."
             }
           ]
         }
